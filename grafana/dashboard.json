@@ -1,162 +1,342 @@
 {
-  "id": null,
-  "uid": "solarbi-pascual-g50",
-  "title": "SolarBI Pascual · Calidad y desempeño",
-  "tags": [
-    "solarbi",
-    "grupo50"
-  ],
-  "timezone": "browser",
-  "schemaVersion": 39,
-  "version": 1,
-  "refresh": "",
-  "time": {
-    "from": "2026-10-05T00:00:00Z",
-    "to": "2026-10-08T00:00:00Z"
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "solarbi-pascual-g50",
+    "namespace": "default",
+    "uid": "90ad8674-63e0-40a9-9729-fe9d873e0c1e",
+    "resourceVersion": "1791585592650014",
+    "generation": 1,
+    "creationTimestamp": "2026-10-09T22:39:52Z",
+    "labels": {
+      "grafana.app/deprecatedInternalID": "1004302413062144"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:eg0qxxwdcu77kb",
+      "grafana.app/saved-from-ui": "Grafana v13.2.3 (90ffed056f)"
+    }
   },
-  "templating": {
-    "list": [
+  "spec": {
+    "annotations": [
       {
-        "name": "dispositivo",
-        "label": "Dispositivo",
-        "type": "query",
-        "datasource": {
-          "type": "postgres",
-          "uid": "eg0pgz1cacl4wc"
-        },
-        "definition": "SELECT nombre AS __text, dispositivo_key AS __value FROM dwh.dim_dispositivo ORDER BY nombre",
-        "query": "SELECT nombre AS __text, dispositivo_key AS __value FROM dwh.dim_dispositivo ORDER BY nombre",
-        "refresh": 1,
-        "includeAll": false,
-        "multi": false
-      }
-    ]
-  },
-  "panels": [
-    {
-      "id": 1,
-      "title": "Potencia e irradiancia · 5 min",
-      "type": "timeseries",
-      "datasource": {
-        "type": "postgres",
-        "uid": "eg0pgz1cacl4wc"
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "postgres",
-            "uid": "eg0pgz1cacl4wc"
-          },
-          "editorMode": "code",
-          "format": "time_series",
-          "rawSql": "SELECT $__time(ts), p_ac_kw AS \"Potencia (kW)\", irradiancia_wm2 AS \"Irradiancia (W/m2)\" FROM silver.lectura_5min WHERE $__timeFilter(ts) AND dispositivo_key = ${dispositivo:raw} ORDER BY ts"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 5,
-            "showPoints": "auto"
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Irradiancia (W/m2)"
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
             },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "right"
-              }
-            ]
+            "spec": {}
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true,
+          "legacyOptions": {
+            "type": "dashboard"
           }
-        ]
+        }
+      }
+    ],
+    "cursorSync": "Crosshair",
+    "editable": true,
+    "elements": {
+      "panel-1": {
+        "kind": "Panel",
+        "spec": {
+          "id": 1,
+          "title": "Potencia e irradiancia cada 5 minutos",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "grafana-postgresql-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bg0qzqwjtroxse"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "format": "time_series",
+                        "rawQuery": true,
+                        "rawSql": "SELECT ts AS \"time\", p_ac_kw AS \"Potencia (kW)\", irradiancia_wm2 AS \"Irradiancia (W/m2)\" FROM silver.lectura_5min WHERE $__timeFilter(ts) AND dispositivo_key = ${dispositivo:raw} ORDER BY ts"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.2.3",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "drawStyle": "line",
+                    "fillOpacity": 8,
+                    "lineInterpolation": "smooth",
+                    "lineWidth": 2,
+                    "pointSize": 5,
+                    "showPoints": "never",
+                    "spanNulls": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Irradiancia (W/m2)"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.axisPlacement",
+                        "value": "right"
+                      },
+                      {
+                        "id": "unit",
+                        "value": "wattm2"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Potencia (kW)"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "kwatt"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
-      "options": {
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi"
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 2,
+          "title": "Porcentaje de datos válidos",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "grafana-postgresql-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bg0qzqwjtroxse"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "format": "table",
+                        "rawQuery": true,
+                        "rawSql": "SELECT ROUND(100.0 * SUM(lecturas_validas) / NULLIF(SUM(lecturas_totales), 0), 2) AS \"Datos válidos (%)\" FROM dwh.fact_energia_dia WHERE $__timeFilter(fecha_key::timestamp) AND dispositivo_key = ${dispositivo:raw}"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.2.3",
+            "spec": {
+              "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "percent",
+                  "decimals": 2,
+                  "min": 0,
+                  "max": 100,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": null,
+                        "color": "red"
+                      },
+                      {
+                        "value": 90,
+                        "color": "yellow"
+                      },
+                      {
+                        "value": 95,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
         }
       }
     },
-    {
-      "id": 2,
-      "title": "Datos válidos (%)",
-      "type": "stat",
-      "datasource": {
-        "type": "postgres",
-        "uid": "eg0pgz1cacl4wc"
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 12,
-        "x": 0,
-        "y": 10
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "postgres",
-            "uid": "eg0pgz1cacl4wc"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "rawSql": "SELECT ROUND(100.0 * SUM(lecturas_validas) / NULLIF(SUM(lecturas_totales), 0), 2) AS \"Datos válidos (%)\" FROM dwh.fact_energia_dia WHERE $__timeFilter(fecha_key::timestamp) AND dispositivo_key = ${dispositivo:raw}"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "percent",
-          "min": 0,
-          "max": 100,
-          "decimals": 2,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 90
-              },
-              {
-                "color": "green",
-                "value": 95
+    "layout": {
+      "kind": "GridLayout",
+      "spec": {
+        "items": [
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 0,
+              "width": 18,
+              "height": 13,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-1"
               }
-            ]
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 18,
+              "y": 0,
+              "width": 6,
+              "height": 13,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-2"
+              }
+            }
           }
-        },
-        "overrides": []
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [
+      "solarbi",
+      "grupo-50"
+    ],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "2026-10-05T00:00:00.000Z",
+      "to": "2026-10-08T00:00:00.000Z",
+      "autoRefresh": "5m",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": false,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "SolarBI Pascual - Calidad y desempeño",
+    "variables": [
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "dispositivo",
+          "current": {
+            "text": "Inversor 1",
+            "value": "1"
+          },
+          "label": "Dispositivo",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana-postgresql-datasource",
+            "version": "v0",
+            "datasource": {
+              "name": "bg0qzqwjtroxse"
+            },
+            "spec": {
+              "__legacyStringValue": "SELECT nombre AS __text, dispositivo_key AS __value FROM dwh.dim_dispositivo ORDER BY nombre"
+            }
+          },
+          "regex": "",
+          "sort": "disabled",
+          "definition": "SELECT nombre AS __text, dispositivo_key AS __value FROM dwh.dim_dispositivo ORDER BY nombre",
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "allowCustomValue": true
         }
       }
-    }
-  ]
+    ]
+  }
 }
