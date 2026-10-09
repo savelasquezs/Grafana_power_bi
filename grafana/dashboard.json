@@ -1,0 +1,162 @@
+{
+  "id": null,
+  "uid": "solarbi-pascual-g50",
+  "title": "SolarBI Pascual · Calidad y desempeño",
+  "tags": [
+    "solarbi",
+    "grupo50"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "",
+  "time": {
+    "from": "2026-10-05T00:00:00Z",
+    "to": "2026-10-08T00:00:00Z"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "dispositivo",
+        "label": "Dispositivo",
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "eg0pgz1cacl4wc"
+        },
+        "definition": "SELECT nombre AS __text, dispositivo_key AS __value FROM dwh.dim_dispositivo ORDER BY nombre",
+        "query": "SELECT nombre AS __text, dispositivo_key AS __value FROM dwh.dim_dispositivo ORDER BY nombre",
+        "refresh": 1,
+        "includeAll": false,
+        "multi": false
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Potencia e irradiancia · 5 min",
+      "type": "timeseries",
+      "datasource": {
+        "type": "postgres",
+        "uid": "eg0pgz1cacl4wc"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "eg0pgz1cacl4wc"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawSql": "SELECT $__time(ts), p_ac_kw AS \"Potencia (kW)\", irradiancia_wm2 AS \"Irradiancia (W/m2)\" FROM silver.lectura_5min WHERE $__timeFilter(ts) AND dispositivo_key = ${dispositivo:raw} ORDER BY ts"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 5,
+            "showPoints": "auto"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Irradiancia (W/m2)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Datos válidos (%)",
+      "type": "stat",
+      "datasource": {
+        "type": "postgres",
+        "uid": "eg0pgz1cacl4wc"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "eg0pgz1cacl4wc"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawSql": "SELECT ROUND(100.0 * SUM(lecturas_validas) / NULLIF(SUM(lecturas_totales), 0), 2) AS \"Datos válidos (%)\" FROM dwh.fact_energia_dia WHERE $__timeFilter(fecha_key::timestamp) AND dispositivo_key = ${dispositivo:raw}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 90
+              },
+              {
+                "color": "green",
+                "value": 95
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    }
+  ]
+}
