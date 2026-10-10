@@ -44,11 +44,43 @@
     "cursorSync": "Crosshair",
     "editable": true,
     "elements": {
+      "panel-0": {
+        "kind": "Panel",
+        "spec": {
+          "id": 0,
+          "title": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "text",
+            "version": "13.2.3",
+            "spec": {
+              "options": {
+                "mode": "markdown",
+                "content": "## Producción solar y calidad de datos\nEste tablero muestra cómo la **irradiancia solar** disponible se transforma en **potencia AC** y permite verificar la **confiabilidad de las lecturas** durante el periodo seleccionado."
+              },
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
       "panel-1": {
         "kind": "Panel",
         "spec": {
           "id": 1,
-          "title": "Potencia e irradiancia cada 5 minutos",
+          "title": "Producción solar: potencia e irradiancia",
+          "description": "La irradiancia (ámbar) representa la energía solar disponible y la potencia AC (verde) muestra la electricidad entregada por el sistema en intervalos de 5 minutos.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -106,14 +138,14 @@
                   "custom": {
                     "axisCenteredZero": false,
                     "axisColorMode": "text",
-                    "axisLabel": "",
+                    "axisLabel": "Potencia AC",
                     "axisPlacement": "auto",
                     "drawStyle": "line",
-                    "fillOpacity": 8,
+                    "fillOpacity": 18,
                     "lineInterpolation": "smooth",
-                    "lineWidth": 2,
-                    "pointSize": 5,
-                    "showPoints": "never",
+                    "lineWidth": 3,
+                    "pointSize": 4,
+                    "showPoints": "auto",
                     "spanNulls": false
                   }
                 },
@@ -129,8 +161,19 @@
                         "value": "right"
                       },
                       {
+                        "id": "custom.axisLabel",
+                        "value": "Irradiancia solar"
+                      },
+                      {
                         "id": "unit",
                         "value": "wattm2"
+                      },
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "#F59E0B"
+                        }
                       }
                     ]
                   },
@@ -143,6 +186,13 @@
                       {
                         "id": "unit",
                         "value": "kwatt"
+                      },
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "#14B8A6"
+                        }
                       }
                     ]
                   }
@@ -156,7 +206,8 @@
         "kind": "Panel",
         "spec": {
           "id": 2,
-          "title": "Porcentaje de datos válidos",
+          "title": "Datos confiables",
+          "description": "Porcentaje de lecturas válidas. Un valor superior al 95 % indica que los datos son suficientemente confiables para el análisis.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -194,8 +245,8 @@
             "version": "13.2.3",
             "spec": {
               "options": {
-                "colorMode": "background",
-                "graphMode": "none",
+                "colorMode": "value",
+                "graphMode": "area",
                 "justifyMode": "center",
                 "orientation": "auto",
                 "reduceOptions": {
@@ -206,7 +257,7 @@
                   "values": false
                 },
                 "showPercentChange": false,
-                "textMode": "auto",
+                "textMode": "value_and_name",
                 "wideLayout": true
               },
               "fieldConfig": {
@@ -220,15 +271,15 @@
                     "steps": [
                       {
                         "value": null,
-                        "color": "red"
+                    "color": "#EF4444"
                       },
                       {
                         "value": 90,
-                        "color": "yellow"
+                        "color": "#F59E0B"
                       },
                       {
                         "value": 95,
-                        "color": "green"
+                        "color": "#22C55E"
                       }
                     ]
                   },
@@ -252,8 +303,21 @@
             "spec": {
               "x": 0,
               "y": 0,
+              "width": 24,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-0"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 4,
               "width": 18,
-              "height": 13,
+              "height": 15,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-1"
@@ -264,9 +328,9 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 18,
-              "y": 0,
+              "y": 4,
               "width": 6,
-              "height": 13,
+              "height": 15,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-2"
@@ -303,7 +367,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "SolarBI Pascual - Calidad y desempeño",
+    "title": "SolarBI Pascual - Producción solar y calidad de datos",
     "variables": [
       {
         "kind": "QueryVariable",
